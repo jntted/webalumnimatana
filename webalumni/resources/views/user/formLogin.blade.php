@@ -35,3 +35,4 @@
 </form>
 <p class="mt-6 text-center text-sm text-slate-600">Belum punya akun? <a href="{{ url('/daftar') }}" class="font-semibold text-indigo-600 hover:text-indigo-500">Daftar</a></p>
 @endsection
+

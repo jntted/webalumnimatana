@@ -3,19 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Session;
 use App\Models\User;
+use App\Models\Alumni;
+use App\Models\Student;
+use App\Models\Teacher;
 use Hash;
 
 class AuthController extends Controller
 {
-    // form login
     public function loginForm(){
         return view('user.formLogin');
     }
-    // cek user login
+
     public function login(Request $request){
         $credentials = $request->validate([
             'email' => 'required|email',
@@ -23,15 +25,19 @@ class AuthController extends Controller
         ]);
         if (Auth::attempt($credentials)){
             $request->session()->regenerate();
+            $user = Auth::user();
+            
+            // Redirect based on role and data completion
+            if (!$user->data_completed) {
+                return redirect()->route('data.form', ['role' => $user->role]);
+            }
             return redirect()->intended('/profil');
         }
-        return back ()->withErrors([
+        return back()->withErrors([
             'email'=>'Email dan Password tidak cocok'
         ]);
     }
-    // user login
-    
-    // user logout
+
     public function logout(Request $request){
         Auth::logout();
         $request->session()->invalidate();
@@ -39,36 +45,135 @@ class AuthController extends Controller
         return redirect('/login');
     }
 
-    // form registrasi
     public function registrationForm(){
-        return view ('user.registrasi');
-    }  
-    // simpan registrasi
-     public function register(Request $request) {
-        // cek isian form register
-        $credentials = $request->validate([
-            'name' => 'required',
+        return view('user.registrasi');
+    }
+
+    public function register(Request $request) {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
+            'role' => 'required|in:alumni,student,teacher',
             'password' => 'required|min:8|confirmed',
         ]);
-       // simpan ke dalam database
+
         $user = User::create([
-            'name' => $credentials['name'],
-            'email' => $credentials['email'],
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'role' => $validated['role'],
             'email_verified_at' => now(),
-            'password' => bcrypt($credentials['password']), // ubah ke format hash
+            'password' => bcrypt($validated['password']),
+            'data_completed' => false,
         ]);
 
-
         Auth::login($user);
-        return redirect()->intended('/profil')->with('success',
-      'Pendaftaran Anda Berhasil'); // lempar ke halaman profil
-     }
+        return redirect()->route('data.form', ['role' => $user->role]);
+    }
+
+    // Tampilkan form pengumpulan data sesuai role
+    public function dataForm($role)
+    {
+        $user = Auth::user();
+        if ($user->role !== $role) {
+            abort(403);
+        }
+
+        return view("user.data.{$role}", compact('user'));
+    }
+
+    // Simpan data berdasarkan role
+    public function storeData(Request $request, $role)
+    {
+        $user = Auth::user();
+        if ($user->role !== $role) {
+            abort(403);
+        }
+
+        if ($role === 'alumni') {
+            $validated = $request->validate([
+                'nim' => 'required|string',
+                'graduation_year' => 'required|integer|min:2000|max:' . date('Y'),
+                'major' => 'required|string',
+                'current_job' => 'required|in:bekerja,tidak_bekerja,melanjutkan_studi',
+                'company_name' => 'required_if:current_job,bekerja|string',
+                'job_position' => 'required_if:current_job,bekerja|string',
+                'salary_range' => 'string|nullable',
+                'phone' => 'required|string',
+            ]);
+
+            Alumni::updateOrCreate(
+                ['user_id' => $user->id],
+                $validated
+            );
+        } elseif ($role === 'student') {
+            $validated = $request->validate([
+                'nim' => 'required|string|unique:students,nim,' . $user->id . ',user_id',
+                'major' => 'required|string',
+                'semester' => 'required|integer|min:1|max:8',
+                'phone' => 'required|string',
+                'address' => 'required|string',
+            ]);
+
+            Student::updateOrCreate(
+                ['user_id' => $user->id],
+                $validated
+            );
+        } elseif ($role === 'teacher') {
+            $validated = $request->validate([
+                'nip' => 'required|string|unique:teachers,nip,' . $user->id . ',user_id',
+                'department' => 'required|string',
+                'phone' => 'required|string',
+                'office' => 'required|string',
+                'specialization' => 'required|string',
+            ]);
+
+            Teacher::updateOrCreate(
+                ['user_id' => $user->id],
+                $validated
+            );
+        }
+
+        $user->update(['data_completed' => true]);
+
+        return redirect('/profil')->with('success', 'Data Anda berhasil disimpan');
+    }
 
     public function profil()
     {
         $user = Auth::user();
-        return view('user.profil', compact('user'));
+        $data = null;
+
+        if ($user->role === 'alumni') {
+            $data = Alumni::where('user_id', $user->id)->first();
+        } elseif ($user->role === 'student') {
+            $data = Student::where('user_id', $user->id)->first();
+        } elseif ($user->role === 'teacher') {
+            $data = Teacher::where('user_id', $user->id)->first();
+        }
+
+        return view('user.profil', compact('user', 'data'));
     }
 
+    public function updateProfilePicture(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user->data_completed) {
+            return back()->with('error', 'Lengkapi data profil Anda terlebih dahulu');
+        }
+
+        $request->validate([
+            'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Delete old picture if exists
+        if ($user->profile_picture && Storage::exists('public/' . $user->profile_picture)) {
+            Storage::delete('public/' . $user->profile_picture);
+        }
+
+        $path = $request->file('profile_picture')->store('profile_pictures', 'public');
+        $user->update(['profile_picture' => $path]);
+
+        return back()->with('success', 'Foto profil berhasil diperbarui');
+    }
 }

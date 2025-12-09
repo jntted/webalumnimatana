@@ -23,18 +23,24 @@ Route::get('/forum', function () {
     return view('layout.forum');
 });
 
-// user
-Route::get('/daftar', [AuthController::class, 'registrationForm']);
-
+// Public Auth Routes
+Route::get('/daftar', [AuthController::class, 'registrationForm'])->name('daftar');
 Route::post('/daftar', [AuthController::class, 'register']);
-
-Route::get('/login', [AuthController::class, 'loginForm']);
-
+Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::get('/logout', [AuthController::class, 'logout']);
+// Protected Auth Routes
+Route::middleware('auth')->group(function () {
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/profil', [AuthController::class, 'profil'])->name('profil');
+    
+    // Data collection routes
+    Route::get('/data/{role}', [AuthController::class, 'dataForm'])->name('data.form');
+    Route::post('/data/{role}', [AuthController::class, 'storeData'])->name('data.store');
+    
+    // Profile picture upload
+    Route::post('/profile-picture', [AuthController::class, 'updateProfilePicture'])->name('profile.picture.update');
+});
 
-Route::get('/profil', [AuthController::class, 'profil'])->middleware('auth');
-
-//alumni
+// Alumni routes
 Route::resource('alumni', AlumniController::class);

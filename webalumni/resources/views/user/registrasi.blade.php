@@ -15,13 +15,23 @@
     @csrf
     <div>
         <label for="name" class="block text-sm font-medium text-slate-700">Nama</label>
-        <input id="name" name="name" type="text" required
+        <input id="name" name="name" type="text" required value="{{ old('name') }}"
             class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" />
     </div>
     <div>
         <label for="email" class="block text-sm font-medium text-slate-700">Email</label>
-        <input id="email" name="email" type="email" autocomplete="email" required
+        <input id="email" name="email" type="email" autocomplete="email" required value="{{ old('email') }}"
             class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" />
+    </div>
+    <div>
+        <label for="role" class="block text-sm font-medium text-slate-700">Anda adalah</label>
+        <select id="role" name="role" required
+            class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+            <option value="">-- Pilih Opsi --</option>
+            <option value="alumni" {{ old('role') === 'alumni' ? 'selected' : '' }}>Alumni</option>
+            <option value="student" {{ old('role') === 'student' ? 'selected' : '' }}>Mahasiswa Aktif</option>
+            <option value="teacher" {{ old('role') === 'teacher' ? 'selected' : '' }}>Dosen</option>
+        </select>
     </div>
     <div>
         <label for="password" class="block text-sm font-medium text-slate-700">Password</label>
