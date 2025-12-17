@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ForumController;
 use App\Http\Controllers\TracerStudyController;
 
 /*
@@ -20,9 +21,7 @@ Route::get('/', function () {
     return view('layout.beranda');
 });
 
-Route::get('/forum', function () {
-    return view('layout.forum');
-});
+Route::get('/forum', [ForumController::class, 'index'])->name('forum');
 
 // DEBUG - Temporary debug route
 Route::get('/debug/alumni/{id}', function ($id) {
