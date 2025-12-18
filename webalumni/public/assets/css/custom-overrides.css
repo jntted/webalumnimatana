@@ -1,0 +1,37 @@
+
+/* Custom overrides to fix header and banner overlap and nav visibility */
+
+/* Keep nav link text visible when background-header class is applied */
+.background-header .main-nav .nav li a {
+  color: #2a2a2a !important;
+}
+.background-header .main-nav .nav li:hover a,
+.background-header .main-nav .nav li a.active {
+  color: #4b8ef1 !important;
+}
+
+/* Fix header: force on top and semi-opaque background for readability */
+.header-area, .header-area.header-sticky {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999 !important;
+  background-color: rgba(255,255,255,0.98) !important;
+}
+
+/* Ensure logo and nav are above any decorative images */
+.header-area .main-nav, .header-area .logo { z-index: 100000; position: relative; }
+
+/* Push main banner down so it doesn't overlap fixed header */
+.main-banner { margin-top: 100px; }
+
+/* Make right-image sit behind content (lower z-index) */
+.main-banner .right-image { z-index: 0; }
+.main-banner .left-content { z-index: 2; position: relative; }
+
+/* Responsive tweak: reduce banner top margin on small screens */
+@media (max-width: 767px) {
+  .main-banner { margin-top: 120px; padding-top: 40px; padding-bottom: 40px; }
+}
+

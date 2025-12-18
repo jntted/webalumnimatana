@@ -17,11 +17,11 @@
             <li class="scroll-to-section"><a href="/forum">Forum</a></li>
             @auth
               <li class="scroll-to-section"><a href="/profil">Profil</a></li>
-              <li class="scroll-to-section"><a href="/alumni">List</a></li>
+              <li class="scroll-to-section"><a href="/lists">List</a></li>
               <li></li>
             @else
               <li class="scroll-to-section"><a href="/profil">Profil</a></li>
-              <li class="scroll-to-section"><a href="/alumni">List</a></li>
+              <li class="scroll-to-section"><a href="/lists">List</a></li>
               <li></li>            
             @endauth
           </ul>
