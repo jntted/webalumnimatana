@@ -74,7 +74,7 @@ class AuthController extends Controller
         ]);
 
         Auth::login($user);
-        return redirect()->route('data.form', ['role' => $user->role]);
+        return redirect()->route('alumni.create', ['role' => $user->role]);
     }
 
     // Tampilkan form pengumpulan data sesuai role
@@ -177,7 +177,6 @@ class AuthController extends Controller
         if ($user->profile_picture && Storage::exists('public/' . $user->profile_picture)) {
             Storage::delete('public/' . $user->profile_picture);
         }
-
         $path = $request->file('profile_picture')->store('profile_pictures', 'public');
         $user->update(['profile_picture' => $path]);
 

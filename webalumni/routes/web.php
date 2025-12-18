@@ -3,9 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\AuthController;
+<<<<<<< HEAD
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\TracerStudyController;
 use App\Http\Controllers\JobVacancyController;
+=======
+use App\Http\Controllers\JobVacancyController;
+use App\Http\Controllers\ForumController;
+use App\Http\Controllers\TracerStudyController;
+>>>>>>> 62dc70436d02a99397b71efb2127efecf0548a37
 
 /*
 |--------------------------------------------------------------------------
@@ -78,5 +84,22 @@ Route::middleware('auth')->group(function () {
     Route::delete('/jobs/{id}', [JobVacancyController::class, 'destroy'])->name('jobs.destroy');
 });
 
+<<<<<<< HEAD
 // Route dengan parameter {id} HARUS paling bawah
 Route::get('/jobs/{id}', [JobVacancyController::class, 'show'])->name('jobs.show');
+=======
+// Admin & Teacher
+Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
+    Route::get('/admin/jobs', [JobVacancyController::class, 'adminIndex'])->name('jobs.admin');
+    Route::post('/jobs/{id}/approve', [JobVacancyController::class, 'approve'])->name('jobs.approve');
+    Route::post('/jobs/{id}/reject', [JobVacancyController::class, 'reject'])->name('jobs.reject');
+});
+// Alumni resource routes
+Route::resource('alumni', AlumniController::class)->middleware('auth');
+
+// Student resource routes (for future expansion)
+Route::resource('student', 'App\Http\Controllers\StudentController')->middleware('auth');
+
+// Teacher resource routes (for future expansion)
+Route::resource('teacher', 'App\Http\Controllers\TeacherController')->middleware('auth');
+>>>>>>> 62dc70436d02a99397b71efb2127efecf0548a37

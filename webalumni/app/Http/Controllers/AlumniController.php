@@ -43,14 +43,21 @@ class AlumniController extends Controller
             'graduation_year' => 'required|integer|min:2000|max:' . date('Y'),
             'major' => 'required|string',
             'current_job' => 'required|in:bekerja,tidak_bekerja,melanjutkan_studi',
-            'company_name' => 'required_if:current_job,bekerja|string',
-            'job_position' => 'required_if:current_job,bekerja|string',
+            'company_name' => 'nullable|string',
+            'job_position' => 'nullable|string',
             'salary_range' => 'string|nullable',
             'phone' => 'required|string',
         ]);
 
         try {
             $validated['user_id'] = $user->id;
+            
+            // Auto-fill company_name and job_position based on employment status
+            if ($validated['current_job'] !== 'bekerja') {
+                $validated['company_name'] = '-';
+                $validated['job_position'] = '-';
+                $validated['salary_range'] = null;
+            }
             
             $exists = DB::table('alumni')->where('user_id', $user->id)->exists();
             
@@ -110,14 +117,21 @@ class AlumniController extends Controller
             'graduation_year' => 'required|integer|min:2000|max:' . date('Y'),
             'major' => 'required|string',
             'current_job' => 'required|in:bekerja,tidak_bekerja,melanjutkan_studi',
-            'company_name' => 'required_if:current_job,bekerja|string',
-            'job_position' => 'required_if:current_job,bekerja|string',
+            'company_name' => 'nullable|string',
+            'job_position' => 'nullable|string',
             'salary_range' => 'string|nullable',
             'phone' => 'required|string',
         ]);
 
         try {
             $validated['user_id'] = $user->id;
+            
+            // Auto-fill company_name and job_position based on employment status
+            if ($validated['current_job'] !== 'bekerja') {
+                $validated['company_name'] = '-';
+                $validated['job_position'] = '-';
+                $validated['salary_range'] = null;
+            }
             
             DB::table('alumni')->where('user_id', $id)->update($validated);
             
