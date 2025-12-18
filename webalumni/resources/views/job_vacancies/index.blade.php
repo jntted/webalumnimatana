@@ -15,6 +15,31 @@
     </div>
 </div>
 @endsection
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lowongan Pekerjaan - Matana University Alumni</title>
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Animate CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
+  
+  <style>
+    /* Job Board Specific Styles */
+    :root {
+      --primary-color: #ffffffff;
+      --secondary-color: #8f94fb;
+      --accent-color: #ff6b6b;
+      --dark-color: #2d3436;
+      --light-bg: #f8f9fa;
+    }
 
 @section('isiWebsite')
 <style>
@@ -750,15 +775,48 @@
     }
 
     /* Responsive */
-    @media (max-width: 992px) {
-        .hero-heading {
-            font-size: 2.5rem;
-        }
-        
-        .jobs-grid-modern {
-            grid-template-columns: 1fr;
-        }
+    @media (max-width: 768px) {
+      .jobs-hero h1 {
+        font-size: 2rem;
+      }
+      
+      .search-card {
+        padding: 20px;
+      }
+      
+      .job-card {
+        padding: 20px;
+      }
     }
+
+    /* Loading Animation */
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid var(--primary-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 50px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ***** Header Area Start ***** -->
+  <!-- <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <a href="/" class="logo">
+              <img src="{{ asset('assets/images/logo_matana.png') }}" alt="Matana University">
+            </a>
 
     @media (max-width: 768px) {
         .hero-heading {
@@ -827,6 +885,66 @@
                 <div class="col-lg-2 col-md-6 d-flex align-items-end">
                     <a href="{{ route('jobs.index') }}" class="btn-reset-modern">Reset</a>
                 </div>
+              @endauth
+            </div>
+
+            <a class='menu-trigger'>
+                <span>Menu</span>
+            </a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header> -->
+
+  @extends('layout.header')
+  <!-- ***** Header Area End ***** -->
+
+  <!-- Hero Section -->
+  <section class="jobs-hero">
+    <div class="container">
+      <div class="row justify-content-center text-center">
+        <div class="col-lg-8">
+          <h1 class="animate__animated animate__fadeInDown">🔍 Lowongan Pekerjaan</h1>
+          <p class="animate__animated animate__fadeInUp">Temukan peluang karir terbaik untuk alumni Matana University</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section class="pb-5">
+    <div class="container">
+      
+      <!-- Search Card -->
+      <div class="search-card">
+        <form action="{{ route('jobs.index') }}" method="GET">
+          <div class="row g-3 align-items-end">
+            <div class="col-lg-5">
+              <label class="form-label fw-bold"><i class="fas fa-search me-2"></i>Cari Lowongan</label>
+              <input type="text" name="search" class="form-control search-input" 
+                     placeholder="Cari judul, perusahaan, atau keyword..." 
+                     value="{{ request('search') }}">
+            </div>
+            <div class="col-lg-3">
+              <label class="form-label fw-bold"><i class="fas fa-filter me-2"></i>Kategori</label>
+              <select name="type" class="form-select search-input">
+                <option value="">Semua Tipe</option>
+                <option value="fulltime" {{ request('type') == 'fulltime' ? 'selected' : '' }}>Full Time</option>
+                <option value="parttime" {{ request('type') == 'parttime' ? 'selected' : '' }}>Part Time</option>
+                <option value="freelance" {{ request('type') == 'freelance' ? 'selected' : '' }}>Freelance</option>
+                <option value="remote" {{ request('type') == 'remote' ? 'selected' : '' }}>Remote</option>
+              </select>
+            </div>
+            <div class="col-lg-2">
+              <button type="submit" class="btn btn-search w-100">
+                <i class="fas fa-search me-2"></i>Cari
+              </button>
+            </div>
+            <div class="col-lg-2">
+              <a href="{{ route('jobs.index') }}" class="btn btn-outline-secondary w-100" style="border-radius: 12px; padding: 15px;">
+                <i class="fas fa-redo me-2"></i>Reset
+              </a>
             </div>
         </form>
     </div>

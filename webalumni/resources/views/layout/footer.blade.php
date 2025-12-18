@@ -4,7 +4,7 @@
   <div class="row">
 
     <div class="col-lg-3 footer-widget">
-      <img src="assets/images/logo-horizontal-white-footer.png"
+      <img src="{{ asset('assets/images/logo-horizontal-white-footer.png') }}"
         alt="Matana University"
         class="h-12 mb-6"/>
       <p>

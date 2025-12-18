@@ -71,7 +71,7 @@ class AlumniController extends Controller
 
             $user->update(['data_completed' => true]);
 
-            return redirect('/profil')->with('success', 'Data alumni berhasil disimpan');
+            return redirect()->route('profil')->with('success', 'Data alumni berhasil disimpan');
         } catch (\Exception $e) {
             \Log::error('Error storing alumni data', [
                 'user_id' => $user->id,

@@ -20,7 +20,7 @@ class TracerStudyController extends Controller
         // Check if alumni record exists - use find() since user_id is primary key
         $alumni = Alumni::find($user->id);
         if (!$alumni) {
-            return redirect()->route('data.form', 'alumni')
+            return redirect()->route('alumni.create')
                 ->with('error', 'Lengkapi data alumni terlebih dahulu');
         }
 
@@ -41,10 +41,15 @@ class TracerStudyController extends Controller
         // Check if alumni record exists - use find() since user_id is primary key
         $alumni = Alumni::find($user->id);
         if (!$alumni) {
-            return redirect()->route('data.form', 'alumni')
+            return redirect()->route('alumni.create')
                 ->with('error', 'Data alumni tidak ditemukan. Lengkapi data alumni terlebih dahulu.');
         }
         
+        \Log::info('Tracer Study Form Submitted', [
+            'user_id' => $user->id,
+            'request_data' => $request->all()
+        ]);
+
         $validated = $request->validate([
             'status' => 'required|in:bekerja_full_time,bekerja_part_time,wiraswasta,lanjut_pendidikan,tidak_kerja_sedang_cari,belum_memungkinkan_kerja',
             'current_company' => 'nullable|string|max:255',
@@ -59,21 +64,28 @@ class TracerStudyController extends Controller
             'f27_diskusi' => 'required|integer|min:1|max:5',
         ]);
 
+        \Log::info('Tracer Study Validation Passed', ['validated_data' => $validated]);
+
         try {
             $validated['alumni_id'] = $user->id;
             $validated['survey_date'] = now()->toDateString();
+
+            \Log::info('Saving Tracer Study', ['data_to_save' => $validated]);
 
             // Check if tracer study already exists
             $existingTracer = TracerStudy::where('alumni_id', $user->id)->first();
             
             if ($existingTracer) {
                 // Update existing
+                \Log::info('Updating existing tracer study', ['tracer_id' => $existingTracer->id]);
                 $existingTracer->update($validated);
             } else {
                 // Create new
+                \Log::info('Creating new tracer study');
                 TracerStudy::create($validated);
             }
 
+            \Log::info('Tracer Study Saved Successfully', ['user_id' => $user->id]);
             return redirect()->route('profil')->with('success', 'Data tracer study berhasil disimpan!');
         } catch (\Exception $e) {
             \Log::error('Tracer Study Save Error: ' . $e->getMessage(), [

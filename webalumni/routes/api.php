@@ -20,23 +20,23 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Forum Routes - Public (Read & Write)
+// Forum Routes - Public Read & Write (No auth required for posting)
 Route::get('/posts', [PostController::class, 'index']);
 Route::get('/posts/{id}', [PostController::class, 'show']);
+Route::post('/posts', [PostController::class, 'store']); // Allow guest posting
 Route::get('/posts/{postId}/comments', [CommentController::class, 'index']);
 Route::get('/comments/{id}', [CommentController::class, 'show']);
-Route::post('/posts', [PostController::class, 'store']);
-Route::post('/posts/{postId}/comments', [CommentController::class, 'store']);
+Route::post('/posts/{id}/like', [PostController::class, 'toggleLike']); // Allow guest like
+Route::post('/comments/{id}/like', [CommentController::class, 'toggleLike']); // Allow guest like
 
-// Forum Routes - Protected (Update, Delete, Likes)
-Route::middleware('auth:sanctum')->group(function () {
+// Forum Routes - Protected (Update, Delete, Comments require auth)
+Route::middleware('auth')->group(function () {
     // Posts
     Route::put('/posts/{id}', [PostController::class, 'update']);
     Route::delete('/posts/{id}', [PostController::class, 'destroy']);
-    Route::post('/posts/{id}/like', [PostController::class, 'toggleLike']);
 
     // Comments
+    Route::post('/posts/{postId}/comments', [CommentController::class, 'store']);
     Route::put('/comments/{id}', [CommentController::class, 'update']);
     Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
-    Route::post('/comments/{id}/like', [CommentController::class, 'toggleLike']);
 });

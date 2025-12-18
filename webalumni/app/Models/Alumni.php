@@ -14,6 +14,7 @@ class Alumni extends Model
     protected $primaryKey = 'user_id';
     public $incrementing = false;
     protected $keyType = 'bigint';
+    public $timestamps = false; // Alumni table doesn't have created_at/updated_at
     
     protected $fillable = [
         'user_id',
@@ -24,7 +25,8 @@ class Alumni extends Model
         'company_name',
         'job_position',
         'salary_range',
-        'linkedin_profile', 
+        'linkedin_profile',
+        'phone',
     ];
 
     public function user()
@@ -37,3 +39,4 @@ class Alumni extends Model
         return $this->hasOne(TracerStudy::class, 'alumni_id', 'user_id');
     }
 }
+

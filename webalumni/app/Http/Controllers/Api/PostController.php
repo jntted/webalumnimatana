@@ -44,8 +44,9 @@ class PostController extends Controller
         }
 
         $post = new Post();
-        // Gunakan auth()->id() jika user login, atau 1 (guest user) jika tidak
-        $post->user_id = auth()->id() ?? 1;
+        // Check session auth first (web guard), then sanctum, then guest (id: 2)
+        $user = auth('web')->user() ?? auth('sanctum')->user();
+        $post->user_id = $user ? $user->id : 2;
         $post->content = $validated['content'] ?? null;
 
         // Handle image upload
@@ -147,7 +148,18 @@ class PostController extends Controller
     public function toggleLike(string $id)
     {
         $post = Post::findOrFail($id);
-        $user = auth()->user();
+        // Check session auth first (web guard), then sanctum
+        $user = auth('web')->user() ?? auth('sanctum')->user();
+
+        // Allow guest to like (just return success without saving)
+        if (!$user) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Post di-like',
+                'liked' => false,
+                'likes_count' => $post->likes_count + 1,
+            ]);
+        }
 
         if ($user->likedPosts()->where('post_id', $id)->exists()) {
             // Unlike

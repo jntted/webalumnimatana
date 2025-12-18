@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 
-    <title>Chain App Dev - App Landing Page HTML5 Template</title>  
+    <title>Website Alumni</title>  
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -30,6 +30,31 @@ https://templatemo.com/tm-570-chain-app-dev
     <link rel="stylesheet" href="assets/css/templatemo-chain-app-dev.css">
     <link rel="stylesheet" href="assets/css/animated.css">
     <link rel="stylesheet" href="assets/css/owl.css">
+
+    <style>
+      /* Override template rule that makes nav links white when background-header is set */
+      .background-header .main-nav .nav li a {
+        color: #2a2a2a !important;
+      }
+      .background-header .main-nav .nav li:hover a,
+      .background-header .main-nav .nav li a.active {
+        color: #4b8ef1 !important;
+      }
+      /* Ensure header stays on top and banner content is pushed below header */
+      .header-area, .header-area.header-sticky {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 99999 !important;
+        background-color: rgba(255,255,255,0.98) !important;
+      }
+
+      /* Push main banner down so it doesn't overlap fixed header */
+      .main-banner {
+        margin-top: 100px; /* match header height */
+      }
+    </style>
 
   </head>
 
@@ -49,9 +74,7 @@ https://templatemo.com/tm-570-chain-app-dev
   <!-- ***** Preloader End ***** -->
 
 <div class="main"></div>
-<header>
-    @include('layout.header')
-</header>
+@include('layout.header')
 
 <div class="col-lg-12">
   <div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">

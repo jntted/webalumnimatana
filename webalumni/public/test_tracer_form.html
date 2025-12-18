@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Tracer Form Submission</title>
+</head>
+<body>
+    <h1>Test Tracer Form Submission</h1>
+    
+    <form method="POST" action="http://127.0.0.1:8000/tracer-study">
+        @csrf
+        
+        <div>
+            <label for="status">Status:</label>
+            <select name="status" id="status" required>
+                <option value="">-- Pilih --</option>
+                <option value="bekerja_full_time">Bekerja Full Time</option>
+                <option value="lanjut_pendidikan">Lanjut Pendidikan</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="current_company">Perusahaan:</label>
+            <input type="text" name="current_company" id="current_company" value="Test Company" />
+        </div>
+
+        <div>
+            <label for="current_position">Posisi:</label>
+            <input type="text" name="current_position" id="current_position" value="Test Position" />
+        </div>
+
+        <div>
+            <label for="funding_source">Sumber Pendanaan:</label>
+            <select name="funding_source" id="funding_source" required>
+                <option value="">-- Pilih --</option>
+                <option value="biaya_sendiri" selected>Biaya Sendiri</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="f21_perkuliahan">F21 (Perkuliahan):</label>
+            <input type="number" name="f21_perkuliahan" id="f21_perkuliahan" min="1" max="5" value="5" required />
+        </div>
+
+        <div>
+            <label for="f22_demonstrasi">F22 (Demonstrasi):</label>
+            <input type="number" name="f22_demonstrasi" id="f22_demonstrasi" min="1" max="5" value="4" required />
+        </div>
+
+        <div>
+            <label for="f23_riset_project">F23 (Riset):</label>
+            <input type="number" name="f23_riset_project" id="f23_riset_project" min="1" max="5" value="4" required />
+        </div>
+
+        <div>
+            <label for="f24_magang">F24 (Magang):</label>
+            <input type="number" name="f24_magang" id="f24_magang" min="1" max="5" value="5" required />
+        </div>
+
+        <div>
+            <label for="f25_praktikum">F25 (Praktikum):</label>
+            <input type="number" name="f25_praktikum" id="f25_praktikum" min="1" max="5" value="3" required />
+        </div>
+
+        <div>
+            <label for="f26_kerja_lapangan">F26 (Kerja Lapangan):</label>
+            <input type="number" name="f26_kerja_lapangan" id="f26_kerja_lapangan" min="1" max="5" value="4" required />
+        </div>
+
+        <div>
+            <label for="f27_diskusi">F27 (Diskusi):</label>
+            <input type="number" name="f27_diskusi" id="f27_diskusi" min="1" max="5" value="5" required />
+        </div>
+
+        <button type="submit">Submit Test</button>
+    </form>
+
+    <p>Note: You need to be logged in as an alumni user for this to work.</p>
+</body>
+</html>

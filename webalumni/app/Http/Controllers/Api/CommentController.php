@@ -31,6 +31,14 @@ class CommentController extends Controller
      */
     public function store(Request $request, string $postId)
     {
+        // Ensure user is authenticated
+        if (!auth('web')->check() && !auth('sanctum')->check()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda harus login untuk menambahkan komentar',
+            ], 401);
+        }
+
         $post = Post::findOrFail($postId);
 
         $validated = $request->validate([
@@ -39,7 +47,9 @@ class CommentController extends Controller
 
         $comment = new Comment();
         $comment->post_id = $postId;
-        $comment->user_id = auth()->id() ?? 1;
+        // Get authenticated user
+        $user = auth('web')->user() ?? auth('sanctum')->user();
+        $comment->user_id = $user->id;
         $comment->content = $validated['content'];
         $comment->save();
 
@@ -128,8 +138,16 @@ class CommentController extends Controller
      */
     public function toggleLike(string $id)
     {
+        // Require authentication for liking comments
+        if (!auth('web')->check() && !auth('sanctum')->check()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Silakan login terlebih dahulu untuk like komentar',
+            ], 401);
+        }
+
         $comment = Comment::findOrFail($id);
-        $user = auth()->user();
+        $user = auth('web')->user() ?? auth('sanctum')->user();
 
         if ($user->likedComments()->where('comment_id', $id)->exists()) {
             // Unlike

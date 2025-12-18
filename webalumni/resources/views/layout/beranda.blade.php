@@ -4,8 +4,8 @@
 <!-- Bagian Teks (Kiri) -->
     <div class="left-content show-up header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
       <div class="col-lg-6">
-      <h2>Selamat Datang para Alumni, Mahasiswa dan Dosen Matana</h2>
-      <p>Website ini dirancang untuk menghubungkan mahasiswa aktif, alumni dan dosen Matana.</p>
+      <h2>Selamat Datang para Alumni Matana</h2>
+      <p>Website ini dirancang untuk menghubungkan para alumni Matana.</p>
       </div>
       @guest
       <div class="white-button first-button scroll-to-section">
@@ -36,7 +36,7 @@
             <h4>Life Updater</h4>
             <p>Berikan pembaruan terbaru tentang kehidupan Anda dengan mudah dan cepat.</p>
             <div class="text-button">
-              <a href="#">Selengkapnya<i class="fa fa-arrow-right"></i></a>
+              <a href="/profil">Selengkapnya<i class="fa fa-arrow-right"></i></a>
             </div>
           </div>
 
@@ -45,11 +45,11 @@
             <h4>Job Vacancy</h4>
             <p>Cari pekerjaan baru dengan mudah menggunakan koneksi anda.</p>
             <div class="text-button">
-              <a href="{{ route('jobs.index') }}">Selengkapnya<i class="fa fa-arrow-right"></i></a>
+              <a href="/jobs">Selengkapnya<i class="fa fa-arrow-right"></i></a>
             </div>
           </div>
 
-          <div class="service-item third-service">
+          <div class="service-item fourth-service">
             <div class="icon"></div>
             <h4>Forum</h4>
             <p>Diskusikan berbagai topik dan berbagi informasi dengan mahasiswa aktif dan dosen-dosen matana.</p>
@@ -59,12 +59,12 @@
           </div>
         
     
-          <div class="service-item fourth-service">
+          <div class="service-item third-service">
             <div class="icon"></div>
-            <h4>Information</h4>
-            <p>Informasi-informasi terbaru mengenai Matana University dan kegiatan sekitarnya.</p>
+            <h4>Connection</h4>
+            <p>Berkenalan dengan sesama alumni dan mahasiswa aktif Matana.</p>
             <div class="text-button">
-              <a href="#">Selengkapnya<i class="fa fa-arrow-right"></i></a>
+              <a href="/lists">Selengkapnya<i class="fa fa-arrow-right"></i></a>
             </div>
           </div>
 

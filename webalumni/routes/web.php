@@ -6,6 +6,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\TracerStudyController;
 use App\Http\Controllers\JobVacancyController;
+use App\Http\Controllers\PeopleController;
+use Illuminate\Container\Attributes\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +24,10 @@ Route::get('/', function () {
     return view('layout.beranda');
 });
 
-Route::get('/forum', [ForumController::class, 'index'])->name('forum');
+Route::get('/forum', [ForumController::class, 'index'])->name('forum')->middleware('auth');
+
+// Public listing: mahasiswa aktif dan alumni
+Route::get('/lists', [PeopleController::class, 'index'])->name('lists.index');
 
 // DEBUG - Temporary debug route
 Route::get('/debug/alumni/{id}', function ($id) {
@@ -94,3 +99,22 @@ Route::resource('student', 'App\Http\Controllers\StudentController')->middleware
 
 // Teacher resource routes (for future expansion)
 Route::resource('teacher', 'App\Http\Controllers\TeacherController')->middleware('auth');
+
+// Temporary debug route to inspect DB content for lists page
+Route::get('/debug/lists', function () {
+    try {
+        $students = \DB::select('SELECT * FROM students LIMIT 5');
+        $alumni = \DB::select('SELECT * FROM alumni LIMIT 5');
+        $studentsCount = \DB::table('students')->count();
+        $alumniCount = \DB::table('alumni')->count();
+
+        return response()->json([
+            'students_count' => $studentsCount,
+            'alumni_count' => $alumniCount,
+            'students_sample' => $students,
+            'alumni_sample' => $alumni,
+        ]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+});
