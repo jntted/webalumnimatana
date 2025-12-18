@@ -60,3 +60,23 @@ Route::middleware('auth')->group(function () {
 
 // Alumni routes
 Route::resource('alumni', AlumniController::class);
+
+// Job Vacancy Routes - PUBLIK
+Route::get('/jobs', [JobVacancyController::class, 'index'])->name('jobs.index');
+
+Route::middleware('auth')->group(function () {
+    // PENTING: Route /jobs/create HARUS di atas /jobs/{id}
+    Route::get('/jobs/create', [JobVacancyController::class, 'create'])->name('jobs.create');
+    Route::post('/jobs', [JobVacancyController::class, 'store'])->name('jobs.store');
+    
+    // My Jobs
+    Route::get('/my-jobs', [JobVacancyController::class, 'myJobs'])->name('jobs.my-jobs');
+    
+    // Edit & Delete
+    Route::get('/jobs/{id}/edit', [JobVacancyController::class, 'edit'])->name('jobs.edit');
+    Route::put('/jobs/{id}', [JobVacancyController::class, 'update'])->name('jobs.update');
+    Route::delete('/jobs/{id}', [JobVacancyController::class, 'destroy'])->name('jobs.destroy');
+});
+
+// Route dengan parameter {id} HARUS paling bawah
+Route::get('/jobs/{id}', [JobVacancyController::class, 'show'])->name('jobs.show');

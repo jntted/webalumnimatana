@@ -12,16 +12,16 @@
 
           <!-- ***** Menu Start ***** -->
           <ul class="nav">
-            <li class="scroll-to-section"><a href="/" class="active">Home</a></li>
-            <li class="scroll-to-section"><a href="{{ url('/#forum') }}">Information</a></li>
-            <li class="scroll-to-section"><a href="/forum">Forum</a></li>
+            <li class="scroll-to-section"><a href="/" class="{{ Request::is('/') ? 'active' : '' }}">Home</a></li>
+             <li class="scroll-to-section"><a href="{{ route('jobs.index') }}" class="{{ Request::is('jobs*') || Request::is('my-jobs') ? 'active' : '' }}">Information</a></li>
+            <li class="scroll-to-section"><a href="/forum" class="{{ Request::is('forum*') ? 'active' : '' }}">Forum</a></li>
             @auth
-              <li class="scroll-to-section"><a href="/profil">Profil</a></li>
-              <li class="scroll-to-section"><a href="/alumni">List</a></li>
+              <li class="scroll-to-section"><a href="/profil" class="{{ Request::is('profil') ? 'active' : '' }}">Profil</a></li>
+              <li class="scroll-to-section"><a href="/alumni" class="{{ Request::is('alumni*') ? 'active' : '' }}">List</a></li>
               <li></li>
             @else
-              <li class="scroll-to-section"><a href="/profil">Profil</a></li>
-              <li class="scroll-to-section"><a href="/alumni">List</a></li>
+              <li class="scroll-to-section"><a href="/profil" class="{{ Request::is('profil') ? 'active' : '' }}">Profil</a></li>
+              <li class="scroll-to-section"><a href="/alumni" class="{{ Request::is('alumni*') ? 'active' : '' }}">List</a></li>
               <li></li>            
             @endauth
           </ul>

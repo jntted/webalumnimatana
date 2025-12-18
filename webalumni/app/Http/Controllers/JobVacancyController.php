@@ -99,8 +99,8 @@ class JobVacancyController extends Controller
             'status' => 'pending' // Semua loker pending dulu
         ]);
 
-        return redirect()->route('jobs.my')
-            ->with('success', 'Lowongan berhasil diposting dan menunggu persetujuan!');
+        return redirect()->route('jobs.my-jobs')
+            ->with('success', 'Lowongan berhasil d  iposting dan menunggu persetujuan!');
     }
 
     /**
@@ -201,7 +201,7 @@ class JobVacancyController extends Controller
             'rejected' => $jobs->where('status', 'rejected')->count(),
         ];
 
-        return view('job_vacancies.my_jobs', compact('jobs', 'stats'));
+        return view('job_vacancies.my-jobs', compact('jobs', 'stats'));
     }
 
     /**
