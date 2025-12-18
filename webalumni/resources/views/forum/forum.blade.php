@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -418,7 +415,7 @@
                     <i class="fas fa-user"></i>
                 </div>
                 <div>
-                    <h6 style="margin: 0; font-weight: 600; color: #1c1e21; font-size: 14px;">{{ authUser.name || 'User' }}</h6>
+                    <h6 style="margin: 0; font-weight: 600; color: #1c1e21; font-size: 14px;">Posting Anonim</h6>
                     <small style="color: #65676b; font-size: 12px;">Publik</small>
                 </div>
             </div>
@@ -695,14 +692,6 @@
 <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
 <script>
-    // Setup axios untuk CSRF token
-    const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-    if (token) {
-        axios.defaults.headers.common['X-CSRF-TOKEN'] = token;
-    }
-    axios.defaults.headers.common['Accept'] = 'application/json';
-    axios.defaults.withCredentials = true;
-
     const { createApp } = Vue;
 
     const app = {

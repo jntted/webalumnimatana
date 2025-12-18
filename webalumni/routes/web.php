@@ -22,7 +22,7 @@ Route::get('/', function () {
     return view('layout.beranda');
 });
 
-Route::get('/forum', [ForumController::class, 'index'])->name('forum');
+Route::get('/forum', [ForumController::class, 'index'])->name('forum')->middleware('auth');
 
 // DEBUG - Temporary debug route
 Route::get('/debug/alumni/{id}', function ($id) {
