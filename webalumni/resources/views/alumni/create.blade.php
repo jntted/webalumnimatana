@@ -95,6 +95,7 @@
         </div>
     </form>
 </div>
+@endsection
 
 <script>
 function toggleJobFields() {
@@ -115,4 +116,3 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-@endsection

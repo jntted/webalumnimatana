@@ -302,21 +302,6 @@
                             <p class="text-lg font-semibold text-slate-800">{{ $data->semester }}</p>
                         </div>
                         @break
-                    
-                    @case('teacher')
-                        <div class="rounded-lg border border-slate-200 p-4">
-                            <p class="text-sm text-slate-500">NIP</p>
-                            <p class="text-lg font-semibold text-slate-800">{{ $data->nip }}</p>
-                        </div>
-                        <div class="rounded-lg border border-slate-200 p-4">
-                            <p class="text-sm text-slate-500">Departemen</p>
-                            <p class="text-lg font-semibold text-slate-800">{{ $data->department }}</p>
-                        </div>
-                        <div class="rounded-lg border border-slate-200 p-4">
-                            <p class="text-sm text-slate-500">Keahlian</p>
-                            <p class="text-lg font-semibold text-slate-800">{{ $data->specialization }}</p>
-                        </div>
-                        @break
                 @endswitch
             </div>
         </div>

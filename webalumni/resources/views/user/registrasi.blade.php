@@ -30,7 +30,6 @@
             <option value="">-- Pilih Opsi --</option>
             <option value="alumni" {{ old('role') === 'alumni' ? 'selected' : '' }}>Alumni</option>
             <option value="student" {{ old('role') === 'student' ? 'selected' : '' }}>Mahasiswa Aktif</option>
-            <option value="teacher" {{ old('role') === 'teacher' ? 'selected' : '' }}>Dosen</option>
         </select>
     </div>
     <div>

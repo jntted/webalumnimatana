@@ -1,30 +1,34 @@
 <style>
   .page-background-fixed {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background-image: url('assets/images/footer-bg.png');
-    background-position: bottom center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    z-index: -1;
-    pointer-events: none;
+    position: fixed!important;
+    bottom: 0!important;
+    left: 0!important;
+    width: 100%!important;
+    height: 100vh!important;
+    background-image: url('{{ asset("assets/images/footer-bg.png") }}')!important;
+    background-position: bottom center!important;
+    background-repeat: no-repeat!important;
+    background-size: cover!important;
+    z-index: -1!important;
+    pointer-events: none!important;
   }
   
   /* Override default footer background to be transparent */
   footer#contact-us {
     background-image: none !important;
     background-color: transparent !important;
-    position: relative;
-    z-index: 10;
+    position: relative !important;
+    z-index: 10 !important;
   }
 
   .container-footer {
-    padding: 40px;
-    border-radius: 8px;
-    color: white;
+    padding: 40px!important;
+    border-radius: 8px!important;
+    color: white!important;
+  }
+
+  .container-footer img {
+    max-width: 200px!important;
   }
 </style>
 
@@ -36,7 +40,7 @@
   <div class="row">
 
     <div class="col-lg-3 footer-widget">
-      <img src="assets/images/logo-horizontal-white-footer.png"
+      <img src="{{ asset('assets/images/logo-horizontal-white-footer.png') }}"
         alt="Matana University"
         class="mb-6"/>
       <p>
