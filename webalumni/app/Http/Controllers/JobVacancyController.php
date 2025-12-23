@@ -152,4 +152,58 @@ class JobVacancyController extends Controller
 
         return view('job_vacancies.my-jobs', compact('jobs'));
     }
+
+    /**
+     * Alumni - Simpan lowongan dari profil (status pending untuk approval)
+     */
+    public function storeFromProfile(Request $request)
+    {
+        $validated = $request->validate([
+            'judul' => 'required|string|max:200',
+            'perusahaan' => 'required|string|max:150',
+            'tipe_pekerjaan' => 'required|in:full_time,part_time,internship,contract,freelance',
+            'lokasi' => 'required|string|max:100',
+            'deskripsi' => 'required|string',
+            'persyaratan' => 'nullable|string',
+            'gaji_min' => 'nullable|numeric|min:0',
+            'gaji_max' => 'nullable|numeric|min:0|gte:gaji_min',
+            'kontak_email' => 'required|email|max:100',
+            'kontak_phone' => 'nullable|string|max:20',
+        ]);
+
+        JobVacancy::create([
+            'judul' => $validated['judul'],
+            'perusahaan' => $validated['perusahaan'],
+            'tipe_pekerjaan' => $validated['tipe_pekerjaan'],
+            'lokasi' => $validated['lokasi'],
+            'deskripsi' => $validated['deskripsi'],
+            'persyaratan' => $validated['persyaratan'] ?? null,
+            'gaji_min' => $validated['gaji_min'] ?? null,
+            'gaji_max' => $validated['gaji_max'] ?? null,
+            'kontak_email' => $validated['kontak_email'],
+            'kontak_phone' => $validated['kontak_phone'] ?? null,
+            'posted_by' => Auth::id(),
+            'status' => 'pending' // Menunggu persetujuan admin
+        ]);
+
+        return redirect()->route('profil')->with('success', 'Lowongan berhasil diunggah! Menunggu persetujuan admin.');
+    }
+
+    /**
+     * Alumni - Lihat lowongan yang pending dan approved dari profil
+     */
+    public function getProfileJobs()
+    {
+        $pendingJobs = JobVacancy::where('posted_by', Auth::id())
+            ->where('status', 'pending')
+            ->latest()
+            ->get();
+
+        $approvedJobs = JobVacancy::where('posted_by', Auth::id())
+            ->where('status', 'approved')
+            ->latest()
+            ->get();
+
+        return compact('pendingJobs', 'approvedJobs');
+    }
 }

@@ -17,6 +17,20 @@
             <li class="scroll-to-section"><a href="/berita">Berita</a></li>
             <li class="scroll-to-section"><a href="/lowongan">Lowongan Pekerjaan</a></li>
             <li class="scroll-to-section"><a href="/events">Events</a></li>
+            <li class="scroll-to-section">
+            @auth
+              <a href="/profil" class="nav-profile">
+              @if(Auth::user()->profile_picture)
+                <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="{{ Auth::user()->name }}" class="profile-pic" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+              @else
+                <img src="assets/images/default-profile.png" alt="Default Profile" class="profile-pic" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+              @endif
+              </a>
+            @else
+              <a href="/login" class="nav-login">Sign In</a>
+            @endauth
+            </li>
+            <li></li>
           </ul>
           
           {{-- 

@@ -60,6 +60,9 @@ Route::middleware('auth')->group(function () {
     // Profile picture upload
     Route::post('/profile-picture', [AuthController::class, 'updateProfilePicture'])->name('profile.picture.update');
     
+    // Profile Job Vacancies Upload
+    Route::post('/profile/job-upload', [JobVacancyController::class, 'storeFromProfile'])->name('profile.jobs.store');
+    
     // Tracer Study Routes
     Route::get('/tracer-study', [TracerStudyController::class, 'showForm'])->name('tracer.form');
     Route::post('/tracer-study', [TracerStudyController::class, 'store'])->name('tracer.store');

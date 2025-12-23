@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Alumni;
 use App\Models\Student;
 use App\Models\Teacher;
+use App\Models\JobVacancy;
 use Hash;
 
 class AuthController extends Controller
@@ -159,16 +160,29 @@ class AuthController extends Controller
     {
         $user = Auth::user();
         $data = null;
+        $pendingJobs = collect();
+        $approvedJobs = collect();
 
         if ($user->role === 'alumni') {
             $data = Alumni::with('tracerStudy')->find($user->id);
+            
+            // Get job vacancies for alumni
+            $pendingJobs = JobVacancy::where('posted_by', $user->id)
+                ->where('status', 'pending')
+                ->latest()
+                ->get();
+
+            $approvedJobs = JobVacancy::where('posted_by', $user->id)
+                ->where('status', 'approved')
+                ->latest()
+                ->get();
         } elseif ($user->role === 'student') {
             $data = Student::where('user_id', $user->id)->first();
         } elseif ($user->role === 'teacher') {
             $data = Teacher::find($user->id);
         }
 
-        return view('user.profil', compact('user', 'data'));
+        return view('user.profil', compact('user', 'data', 'pendingJobs', 'approvedJobs'));
     }
 
     public function updateProfilePicture(Request $request)
